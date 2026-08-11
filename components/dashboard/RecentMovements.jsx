@@ -9,6 +9,14 @@ export default function RecentMovements() {
         (state) => state.movimientos
     );
 
+    const recentMovements = [...movimientos]
+        .sort(
+            (a, b) =>
+                new Date(b.createdAt).getTime() -
+                new Date(a.createdAt).getTime()
+        )
+        .slice(0, 5);
+
     return (
 
         <section>
@@ -21,7 +29,7 @@ export default function RecentMovements() {
 
             {
 
-                movimientos.length === 0 ? (
+                recentMovements.length === 0 ? (
 
                     <div className="rounded-2xl bg-slate-100 p-6 text-center">
 
@@ -37,7 +45,7 @@ export default function RecentMovements() {
 
                     <div className="space-y-3">
 
-                        {movimientos.map((movimiento) => (
+                        {recentMovements.map((movimiento) => (
 
                             <MovementItem
 

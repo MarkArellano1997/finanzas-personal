@@ -1,10 +1,11 @@
 "use client";
 
 import useFinanceStore from "@/stores/financeStore";
+import useAccountStore from "@/stores/accountStore";
 import { Wallet } from "lucide-react";
 
 import {
-    getDisponible,
+    getBalanceTotal,
 } from "@/lib/finance/balance";
 
 import {
@@ -15,8 +16,9 @@ export default function BalanceCard() {
     const movimientos = useFinanceStore(
         (state) => state.movimientos
     );
+    const cuentas = useAccountStore((state) => state.cuentas);
 
-    const disponible = getDisponible(movimientos);
+    const balanceTotal = getBalanceTotal(cuentas, movimientos);
 
     return (
         <section className="rounded-3xl bg-gradient-to-r from-blue-600 to-blue-500 p-6 text-white shadow-lg">
@@ -26,12 +28,12 @@ export default function BalanceCard() {
                 <div>
 
                     <p className="text-blue-100">
-                        Disponible
+                        Balance total
                     </p>
 
                     <h2 className="mt-2 text-4xl font-bold">
 
-                        {formatCurrency(disponible)}
+                        {formatCurrency(balanceTotal)}
 
                     </h2>
 

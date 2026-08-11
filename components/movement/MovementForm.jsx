@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 
 import useFinanceStore from "@/stores/financeStore";
 import useCategoryStore from "@/stores/categoryStore";
+import useAccountStore from "@/stores/accountStore";
 import { createMovement } from "@/lib/finance/createMovement";
 
 import CategorySelector from "./CategorySelector";
@@ -15,7 +16,7 @@ export default function MovementForm({
 }) {
     const [type, setType] = useState("expense");
     const [categoryId, setCategoryId] = useState(null);
-    const [accountId, setAccountId] = useState("cash");
+    const [accountId, setAccountId] = useState(null);
 
     const {
         register,
@@ -29,12 +30,19 @@ export default function MovementForm({
     );
 
     const categories = useCategoryStore((state) => state.categorias);
+    const accounts = useAccountStore((state) => state.cuentas);
 
     const selectedCategoryId = categories.some(
         (category) => category.id === categoryId
     )
         ? categoryId
         : categories[0]?.id || null;
+
+    const selectedAccountId = accounts.some(
+        (account) => account.id === accountId
+    )
+        ? accountId
+        : accounts[0]?.id || null;
 
     function onSubmit(data) {
         agregarMovimiento(
@@ -48,14 +56,14 @@ export default function MovementForm({
                         ? selectedCategoryId
                         : null,
 
-                accountId,
+                accountId: selectedAccountId,
             })
         );
 
         reset();
 
         setCategoryId(null);
-        setAccountId("cash");
+        setAccountId(null);
         setType("expense");
 
         onSuccess?.();
@@ -143,7 +151,7 @@ export default function MovementForm({
                 </label>
 
                 <AccountSelector
-                    value={accountId}
+                    value={selectedAccountId}
                     onChange={setAccountId}
                 />
 
@@ -166,7 +174,7 @@ export default function MovementForm({
 
             <button
                 type="submit"
-                disabled={isSubmitting}
+                disabled={isSubmitting || !selectedAccountId}
                 className={`w-full rounded-xl py-3 font-semibold text-white transition ${type === "expense"
                         ? "bg-blue-600 hover:bg-blue-700"
                         : "bg-green-600 hover:bg-green-700"

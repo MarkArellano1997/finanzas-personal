@@ -6,6 +6,7 @@ import Header from "./Header";
 import BalanceCard from "./BalanceCard";
 import SummaryCards from "./SummaryCards";
 import RecentMovements from "./RecentMovements";
+import AccountsSection from "./AccountsSection";
 
 import FloatingButton from "../layout/FloatingButton";
 import RegisterMovementSheet from "../movement/RegisterMovementSheet";
@@ -26,6 +27,8 @@ export default function Dashboard() {
                     <BalanceCard />
 
                     <SummaryCards />
+
+                    <AccountsSection />
 
                     <RecentMovements />
 
