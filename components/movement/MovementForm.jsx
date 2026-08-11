@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import useFinanceStore from "@/stores/financeStore";
+import useCategoryStore from "@/stores/categoryStore";
 import { createMovement } from "@/lib/finance/createMovement";
 
 import CategorySelector from "./CategorySelector";
@@ -13,7 +14,7 @@ export default function MovementForm({
     onSuccess,
 }) {
     const [type, setType] = useState("expense");
-    const [categoryId, setCategoryId] = useState(1);
+    const [categoryId, setCategoryId] = useState(null);
     const [accountId, setAccountId] = useState("cash");
 
     const {
@@ -27,6 +28,14 @@ export default function MovementForm({
         (state) => state.agregarMovimiento
     );
 
+    const categories = useCategoryStore((state) => state.categorias);
+
+    const selectedCategoryId = categories.some(
+        (category) => category.id === categoryId
+    )
+        ? categoryId
+        : categories[0]?.id || null;
+
     function onSubmit(data) {
         agregarMovimiento(
             createMovement({
@@ -36,7 +45,7 @@ export default function MovementForm({
 
                 categoryId:
                     type === "expense"
-                        ? categoryId
+                        ? selectedCategoryId
                         : null,
 
                 accountId,
@@ -45,7 +54,7 @@ export default function MovementForm({
 
         reset();
 
-        setCategoryId(1);
+        setCategoryId(null);
         setAccountId("cash");
         setType("expense");
 
@@ -120,7 +129,7 @@ export default function MovementForm({
                     </label>
 
                     <CategorySelector
-                        value={categoryId}
+                        value={selectedCategoryId}
                         onChange={setCategoryId}
                     />
 
