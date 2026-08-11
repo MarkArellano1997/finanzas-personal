@@ -1,30 +1,50 @@
+"use client";
+
+import useFinanceStore from "@/stores/financeStore";
 import { Wallet } from "lucide-react";
-import { Card } from "@/components/ui/card";
+
+import {
+    getDisponible,
+} from "@/lib/finance/balance";
+
+import {
+    formatCurrency,
+} from "@/lib/format/currency";
 
 export default function BalanceCard() {
+    const movimientos = useFinanceStore(
+        (state) => state.movimientos
+    );
+
+    const disponible = getDisponible(movimientos);
+
     return (
-        <Card className="rounded-3xl">
+        <section className="rounded-3xl bg-gradient-to-r from-blue-600 to-blue-500 p-6 text-white shadow-lg">
 
-            <div className="flex items-center gap-3">
-
-                <div className="bg-blue-100 p-3 rounded-2xl">
-                    <Wallet className="text-blue-600" />
-                </div>
+            <div className="flex items-center justify-between">
 
                 <div>
 
-                    <p className="text-slate-500">
+                    <p className="text-blue-100">
                         Disponible
                     </p>
 
-                    <h2 className="text-3xl font-bold">
-                        S/ 0.00
+                    <h2 className="mt-2 text-4xl font-bold">
+
+                        {formatCurrency(disponible)}
+
                     </h2>
+
+                </div>
+
+                <div className="rounded-full bg-white/20 p-4">
+
+                    <Wallet size={30} />
 
                 </div>
 
             </div>
 
-        </Card>
+        </section>
     );
 }

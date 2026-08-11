@@ -1,19 +1,48 @@
-import MainLayout from "../layout/MainLayout";
-import Header from "../layout/Header";
+"use client";
+
+import { useState } from "react";
+
+import Header from "./Header";
 import BalanceCard from "./BalanceCard";
+import SummaryCards from "./SummaryCards";
+import RecentMovements from "./RecentMovements";
+
+import FloatingButton from "../layout/FloatingButton";
+import RegisterMovementSheet from "../movement/RegisterMovementSheet";
 
 export default function Dashboard() {
+
+    const [openSheet, setOpenSheet] = useState(false);
+
     return (
-        <MainLayout>
+        <main className="min-h-screen bg-slate-100">
 
-            <Header />
+            <div className="mx-auto max-w-md bg-white min-h-screen relative">
 
-            <section className="px-5">
+                <Header />
 
-                <BalanceCard />
+                <div className="space-y-5 px-4 pb-28">
 
-            </section>
+                    <BalanceCard />
 
-        </MainLayout>
+                    <SummaryCards />
+
+                    <RecentMovements />
+
+                </div>
+
+                <FloatingButton
+                    onClick={() => setOpenSheet(true)}
+                />
+
+                <RegisterMovementSheet
+                    open={openSheet}
+                    onOpenChange={setOpenSheet}
+                />
+
+            </div>
+
+        </main>
     );
+
 }

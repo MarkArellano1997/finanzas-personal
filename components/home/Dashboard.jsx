@@ -1,28 +1,44 @@
-import Header from "./Header";
-import BalanceCard from "./BalanceCard";
-import QuickActions from "./QuickActions";
-import RecentMovements from "./RecentMovements";
+"use client";
+
+import { useState } from "react";
+
+import MainLayout from "../layout/MainLayout";
+import Header from "../layout/Header";
+import FloatingButton from "../layout/FloatingButton";
+
+import BalanceCard from "../dashboard/BalanceCard";
+import SummaryCards from "../dashboard/SummaryCards";
+import RecentMovements from "../dashboard/RecentMovements";
+
+import RegisterMovementSheet from "../movement/RegisterMovementSheet";
 
 export default function Dashboard() {
+
+    const [open, setOpen] = useState(false);
+
     return (
-        <main className="min-h-screen bg-slate-100 pb-24">
 
-            <div className="max-w-md mx-auto">
+        <MainLayout>
 
-                <Header />
+            <Header />
 
-                <div className="px-4 space-y-4">
+            <BalanceCard />
 
-                    <BalanceCard />
+            <SummaryCards />
 
-                    <QuickActions />
+            <RecentMovements />
 
-                    <RecentMovements />
+            <FloatingButton
+                onClick={() => setOpen(true)}
+            />
 
-                </div>
+            <RegisterMovementSheet
+                open={open}
+                onOpenChange={setOpen}
+            />
 
-            </div>
+        </MainLayout>
 
-        </main>
     );
+
 }
